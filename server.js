@@ -1,18 +1,25 @@
-//All const
-const logger = require('morgan');
+//Import Dependencies
 const express = require('express');
-const Flight = require('.models/flight,');
-const app = express();
+const logger = require('morgan');
+const mongoose = require('mongoose');
+const Flight = require('./models/flight');
+const path = require('path');
 const port = process.env.PORT || 3000;
 
-//connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/your-database', { useNewUrlParser: true, useUnifiedTopology: true });
+//Import Router
+const router = require('./controllers/flights');
 
+//create app object + set up view engine
+const app = express();//call express function
 
-//Set up middleware and routes
-app.use(express.urlencoded({extended: true}));
-app.use('/flights', flightRoutes);
-//start the server
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
-  });
+//view engine - ejs
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+app.get('/flights/:id', (req, res) => {
+    const flightsId = req.params.id;
+    // Retrieve resource details based on resourceId
+    // Render or send the details in the response
+    res.send(`Showing details for flights ${flightsId}`);
+});
+
+require('dotenv').config();
